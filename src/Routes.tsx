@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRoutes } from "react-router-dom";
 import productRoutes from "./screens/products/routes";
 const routes = [productRoutes, { path: "*", element: <div>404</div> }];

@@ -1,11 +1,11 @@
 export type Product = {
-  id: string;
-  name: string;
-  description: string;
-};
-
-export type ProductState = {
-  list: Product[];
-  selected: Product;
-  loading: boolean;
+  _id?: string;
+  name?: string;
+  description?: string;
+  brand?: string;
+  image?: string;
+  price?: number;
+  deletedAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };

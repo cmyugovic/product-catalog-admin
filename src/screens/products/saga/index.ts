@@ -42,7 +42,7 @@ function* create() {
     function* ({ payload }: Action<{ body: Product }>) {
       try {
         const { body } = payload;
-        const response = yield call(api.post, `/products/`, body);
+        const response = yield call(api.post, `/products`, body);
         yield put({
           type: PRODUCTS.CREATE_SUCCESS,
           payload: response.data,

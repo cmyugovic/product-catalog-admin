@@ -6,38 +6,37 @@ export { PRODUCTS } from "./product.actions";
 
 const initialState: ProductState = {
   list: [],
-  selected: {} as Product,
-  loading: false,
+  selected: undefined,
+  initialLoading: false,
+  actionLoading: false,
+  shouldRedirect: false,
 };
 
 export default handleActions<ProductState, any>(
   {
-    [PRODUCTS.GET_LIST_REQUEST]: (state): ProductState => {
-      return {
-        ...state,
-        list: [],
-        loading: true,
-      };
-    },
+    [PRODUCTS.GET_LIST_REQUEST]: (state): ProductState => ({
+      ...state,
+      list: [],
+      initialLoading: true,
+      shouldRedirect: false,
+    }),
     [PRODUCTS.GET_LIST_SUCCESS]: (
       state,
       { payload }: Action<Product[]>
     ): ProductState => ({
       ...state,
       list: payload,
-      loading: false,
+      initialLoading: false,
     }),
-    [PRODUCTS.GET_LIST_FAILURE]: (state): ProductState => {
-      return {
-        ...state,
-        list: [],
-        loading: false,
-      };
-    },
+    [PRODUCTS.GET_LIST_FAILURE]: (state): ProductState => ({
+      ...state,
+      list: [],
+      initialLoading: false,
+    }),
     [PRODUCTS.GET_REQUEST]: (state): ProductState => ({
       ...state,
-      selected: {} as Product,
-      loading: true,
+      selected: undefined,
+      initialLoading: true,
     }),
     [PRODUCTS.GET_SUCCESS]: (
       state,
@@ -45,40 +44,58 @@ export default handleActions<ProductState, any>(
     ): ProductState => ({
       ...state,
       selected: payload,
-      loading: false,
+      initialLoading: false,
     }),
     [PRODUCTS.GET_FAILURE]: (state, { error }): ProductState => ({
       ...state,
-      selected: {} as Product,
-      loading: false,
+      selected: undefined,
+      initialLoading: false,
     }),
     [PRODUCTS.CREATE_REQUEST]: (state): ProductState => ({
       ...state,
-      loading: true,
+      actionLoading: true,
     }),
     [PRODUCTS.CREATE_SUCCESS]: (state, { payload }): ProductState => ({
       ...state,
-      loading: false,
+      actionLoading: false,
+      shouldRedirect: true,
     }),
     [PRODUCTS.CREATE_FAILURE]: (state, { error }): ProductState => ({
       ...state,
-      loading: false,
+      actionLoading: false,
     }),
     [PRODUCTS.UPDATE_REQUEST]: (state): ProductState => ({
       ...state,
-      loading: true,
+      actionLoading: true,
     }),
     [PRODUCTS.UPDATE_SUCCESS]: (
       state,
       { payload }: Action<Product>
     ): ProductState => ({
       ...state,
-      loading: false,
+      actionLoading: false,
       selected: payload,
+      shouldRedirect: true,
     }),
     [PRODUCTS.UPDATE_FAILURE]: (state): ProductState => ({
       ...state,
-      loading: false,
+      actionLoading: false,
+    }),
+    [PRODUCTS.DELETE_REQUEST]: (state): ProductState => ({
+      ...state,
+      actionLoading: true,
+    }),
+    [PRODUCTS.DELETE_SUCCESS]: (
+      state,
+      { payload }: Action<Product>
+    ): ProductState => ({
+      ...state,
+      actionLoading: false,
+      list: state.list.filter((e) => e._id !== payload._id),
+    }),
+    [PRODUCTS.DELETE_FAILURE]: (state): ProductState => ({
+      ...state,
+      actionLoading: false,
     }),
   },
   initialState

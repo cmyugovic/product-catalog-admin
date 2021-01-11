@@ -3,7 +3,7 @@ import List from "./list";
 import Create from "./create";
 import Update from "./update";
 const routes: any = {
-  path: "/products",
+  path: "/admin/products",
   children: [
     { path: "/", element: <List /> },
     { path: "/create", element: <Create /> },

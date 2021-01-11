@@ -4,13 +4,16 @@ import "./App.css";
 import AppRoutes from "./Routes";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import MainLayout from "./layouts/Main";
 
 function App() {
   return (
     <div className='App'>
       <Provider store={store}>
         <BrowserRouter>
-          <AppRoutes />
+          <MainLayout>
+            <AppRoutes />
+          </MainLayout>
         </BrowserRouter>
       </Provider>
     </div>
