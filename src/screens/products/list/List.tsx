@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import DynamicList from "../../../components/DynamicList";
+import { DynamicList, SearchBar } from "../../../components";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import {
   Button,
@@ -35,9 +35,17 @@ const ProductList = () => {
   const productsState = useSelector((state: RootState) => state.products);
   const { initialLoading, actionLoading, list } = productsState;
 
+  const searchProducts = (filterValue: string, filterField: string) => {
+    dispatch({
+      type: PRODUCTS.GET_LIST_REQUEST,
+      payload: { filterField, filterValue },
+    });
+  };
+
   useEffect(() => {
     dispatch({
       type: PRODUCTS.GET_LIST_REQUEST,
+      payload: {},
     });
   }, [dispatch]);
 
@@ -66,6 +74,14 @@ const ProductList = () => {
 
   return (
     <div className={classes.root}>
+      <SearchBar
+        search={searchProducts}
+        fields={[
+          { label: "Brand", value: "brand" },
+          { label: "ID", value: "_id" },
+          { label: "Description", value: "description" },
+        ]}
+      />
       <DynamicList
         loading={initialLoading}
         actions={

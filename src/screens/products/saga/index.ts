@@ -5,17 +5,26 @@ import { Action } from "redux-actions";
 import { Product } from "../model/product.model";
 
 function* getList() {
-  yield takeLatest(PRODUCTS.GET_LIST_REQUEST, function* () {
-    try {
-      const response = yield call(api.get, `/products`);
-      yield put({
-        type: PRODUCTS.GET_LIST_SUCCESS,
-        payload: response.data,
-      });
-    } catch (e) {
-      yield put({ type: PRODUCTS.GET_LIST_FAILURE, error: e });
+  yield takeLatest(
+    PRODUCTS.GET_LIST_REQUEST,
+    function* ({
+      payload,
+    }: Action<{ filterField: string; filterValue: string }>) {
+      const { filterField, filterValue } = payload;
+      try {
+        const response = yield call(
+          api.get,
+          `/products?fq[${filterField}]=${filterValue}`
+        );
+        yield put({
+          type: PRODUCTS.GET_LIST_SUCCESS,
+          payload: response.data,
+        });
+      } catch (e) {
+        yield put({ type: PRODUCTS.GET_LIST_FAILURE, error: e });
+      }
     }
-  });
+  );
 }
 
 function* get() {
